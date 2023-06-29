@@ -1,6 +1,6 @@
 package project190;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class rotateLinkedlist {
     public static class ListNode {
@@ -11,61 +11,83 @@ public class rotateLinkedlist {
             val = x;
         }
     }
+    public static ListNode insertNode(ListNode head , int k){
+        ListNode newNode = new ListNode(k);
+            if (head == null) {
+            head = newNode;
+            return head;
+           }
+            ListNode temp = head;
+            while (temp.next != null) temp = temp.next;
 
-    public static ListNode rotateRight(ListNode head, int k) {
-        if (head == null || head.next != null || k == 0) return head;
+            temp.next = newNode;
+            return head;
+   }
 
-        ListNode curr = head;
-        int length = 1;
+  //utility function to rotate list by k times
 
-        while (curr.next != null) {
-            length++;
-            curr = curr.next;
-        }
+  public static ListNode rotateRight(ListNode head, int k) {
+    if (head == null || head.next == null) return head;
+    for (int i = 0; i < k; i++) {
+      ListNode temp = head;
+      while (temp.next.next != null) temp = temp.next;
+      ListNode end = temp.next;
+      temp.next = null;
+      end.next = head;
+      head = end;
+    }
+    return head;
+  }
+  //utility function to print list
+  static void printList(ListNode head) {
+    while (head.next != null) {
+      System.out.print(head.val + "->");
+      head = head.next;
+    }
+    System.out.println(head.val);
 
-        curr.next = head;
-        k = length - k % length;
-        while (k-- > 0) curr = curr.next;
+  }
 
-        head = curr.next;
-        curr.next = null;
+  public static ListNode rotateRight1(ListNode head, int k) {
+    if (head == null || k == 0) return head;
 
-        return head;
+    ListNode curr = head;
+    int length = 1;
+
+    while (curr.next != null) {
+        length++;
+        curr = curr.next;
     }
 
+    curr.next = head;
+    k = length - k % length;
+    while (k-- > 0) curr = curr.next;
+
+    head = curr.next;
+    curr.next = null;
+
+    return head;
+}
+
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter the elements of the linked list separated by spaces: ");
-        String[] elements = scanner.nextLine().split(" ");
-
         ListNode head = null;
-        ListNode current = null;
+    //inserting elements in the head of the listheads
+    head = insertNode(head, 1);
+    head = insertNode(head, 2);
+    head = insertNode(head, 3);
+    head = insertNode(head, 4);
+    head = insertNode(head, 5);
 
-        for (String element : elements) {
-            int value = Integer.parseInt(element);
-            ListNode node = new ListNode(value);
+    System.out.println("Original list: ");
+    printList(head);
 
-            if (head == null) {
-                head = node;
-                current = node;
-            } else {
-                current.next = node;
-                current = current.next;
-            }
-        }
+    int k = 3;
+    ListNode newHead = rotateRight1(head, k); //calling function for rotating 
+   // right of the nodes by k times
 
-        System.out.print("Enter the value of 'k': ");
-        int k = scanner.nextInt();
-
-        scanner.close();
-
-        ListNode rotatedHead = rotateRight(head, k);
-
-        // Print the rotated linked list
-        while (rotatedHead != null) {
-            System.out.print(rotatedHead.val + " ");
-            rotatedHead = rotatedHead.next;
-        }
+    System.out.println("After " + k + " iterations: ");
+    printList(newHead); //l
+       
     }
 }
