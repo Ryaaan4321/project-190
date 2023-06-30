@@ -14,8 +14,8 @@ public class Lrucache {
     }
 
     public static class LRUCache {
-        ListNode head = new ListNode(0, 0);
-        ListNode tail = new ListNode(0, 0);
+        ListNode head = new ListNode(0, 0);// intializing the doubly linked list head;
+        ListNode tail = new ListNode(0, 0); // intializing the doubly linked list tail;
         int capacity;
         HashMap<Integer, ListNode> hashMap;
 
@@ -37,26 +37,27 @@ public class Lrucache {
         }
 
         public void put(int key, int value) {
-            if (hashMap.containsKey(key)) {
-                remove(hashMap.get(key));
+            if (hashMap.containsKey(key)) { // if in case wee already have the key value in hashmap then we need to remove it  and then only
+                remove(hashMap.get(key)); // we can put the values into the hashmap so we removed the value from the hasshmap;
             }
-            if (hashMap.size() == capacity) {
-                remove(tail.prev); // Remove the least recently used node from the cache
+            if (hashMap.size() == capacity) { // if the size is  equal to the capacity then then to insert the value we  first need to 
+                remove(tail.prev); // remove the least recently used node from the cache
             }
-            insert(new ListNode(key, value));
+            insert(new ListNode(key, value)); // and then wee can insert the new value into it..!
         }
 
-        private void remove(ListNode node) {
-            hashMap.remove(node.key);
-            node.prev.next = node.next;
-            node.next.prev = node.prev;
+        private void remove(ListNode node) { // once the vlue is removed we need to establish the connections again
+            hashMap.remove(node.key);  // and for that
+            node.prev.next = node.next; // connected the nodes previous element to the next element of the node
+            node.next.prev = node.prev; // and connected the nodes next element to the previous element of the node
+            // to establish a connection of doubly linked list againnnnn
         }
 
-        private void insert(ListNode node) {
-            hashMap.put(node.key, node);
-            node.next = head.next;
-            node.prev = head;
-            head.next.prev = node;
+        private void insert(ListNode node) { //to insert the value in a doubly linked list we need to take care of both the factors next and prev;
+            hashMap.put(node.key, node);// 
+            node.next = head.next; // and for tht nodes next is equal to the heads next and
+            node.prev = head; // nodes prev to the headdd
+            head.next.prev = node; // head.next.prev = node tht means 
             head.next = node;
         }
     }
